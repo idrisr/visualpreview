@@ -12,23 +12,20 @@
       pkgs = nixpkgs.legacyPackages.${system};
       visualpreview = pkgs.callPackage ./visualpreview.nix { };
       hooks = {
-        nixfmt.enable = true;
-        deadnix.enable = true;
         beautysh.enable = true;
+        deadnix.enable = true;
+        latexindent.enable = true;
+        nixfmt.enable = true;
       };
     in {
-      overlays = {
-        visualpreview = _: prev: prev.callPackage ./visualpreview.nix { };
+      overlays.visualpreview = _: prev: {
+        visualpreview = prev.callPackage ./visualpreview.nix { };
       };
       packages.${system} = { default = visualpreview; };
-      devShells.${system} = let pkgs = nixpkgs.legacyPackages.${system};
-      in {
+      devShells.${system} = {
         default = devenv.lib.mkShell {
           inherit inputs pkgs;
-          modules = [{
-            processes.hello.exec = "hello";
-            pre-commit.hooks = hooks;
-          }];
+          modules = [{ pre-commit.hooks = hooks; }];
         };
       };
 
