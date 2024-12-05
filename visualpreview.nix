@@ -1,5 +1,5 @@
 { epub-thumbnailer, ffmpegthumbnailer, fontpreview, imagemagick, kitty
-, poppler_utils, writeShellApplication }:
+, poppler_utils, nix-derivation, writeShellApplication }:
 
 writeShellApplication {
   name = "visualpreview";
@@ -10,6 +10,7 @@ writeShellApplication {
     imagemagick
     kitty
     poppler_utils
+    nix-derivation
   ];
   text = builtins.readFile ./visualpreview.sh;
 }
